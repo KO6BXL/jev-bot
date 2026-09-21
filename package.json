@@ -1,0 +1,23 @@
+{
+  "name": "jev-bot",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.53",
+    "@openrouter/sdk": "^1.3.9",
+    "ai": "^7.0.107",
+    "discord.js": "^14.27.0",
+    "dotenv": "^18.0.1",
+    "zod": "^4.6.5"
+  }
+}
