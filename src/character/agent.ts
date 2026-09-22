@@ -36,7 +36,8 @@ export class Agent {
     }
 
     async Call(context: Message[]) {
-        context = context.slice(0, 10) 
+        const jev_context = context.slice(-16, -1) 
+        console.log(`JEV START\n${jev_context.map(msg => `${msg.Author}:${msg.Content}\n`)}\nJEV END`)
         const name = this.info.Name
         const descrip = this.info.Description
         console.log("Evaluating request with jev...")
@@ -49,13 +50,13 @@ export class Agent {
                             false: `${name} shouldn't respond to the latest message`,
                             true: `${name} should respond to the latest message`
                         },
-                        instructions: `Should ${name} respond to the latest message based on the provided context of the conversation.`,
+                        instructions: `Should ${name} respond to the latest message based on the provided context of the conversation. Don't assume that if ${name} didn't respond before he wouldn't now. If someone mentions ${name}, chances are ${name} would respond.`,
                         type: "noul"
                     }
                 },
                 state: {
                     "Description": descrip,
-                    "last-10-messages": context,
+                    "last-15-messages": jev_context,
                 }
             }
         })
@@ -70,7 +71,9 @@ export class Agent {
                 system: `Respond to the latest message in the json as ${name} is described. Do not prefix, do not format, respond in clean, short English. This isn't roleplay. Respond as if you were truley ${name}. Do not encourage or engage in explicit, illegal, or otherwise unsafe conversation. Do not use slurs. \n${name}'s Description:\n ${descrip}`,
                 prompt: JSON.stringify(context)
             })
-            return text
+            return {score: shouldRespond.noul, text}
+        } else if(shouldRespond && shouldRespond.type == "noul") {
+            return {score: shouldRespond.noul, text: ""}
         }
     }
 }

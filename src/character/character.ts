@@ -31,7 +31,7 @@ export class Character {
                 return
             }
             console.log(`New Message:\n${msg.author.tag}:${msg.content}`)
-            const lastmsgs = await msg.channel.messages.fetch({limit: 10})
+            const lastmsgs = await msg.channel.messages.fetch({limit: 100})
             lastmsgs.forEach((m) => {
                 log.push({
                     Author: m.author.tag,
@@ -41,9 +41,11 @@ export class Character {
             log.reverse()
             console.log("Going to the agent flow...")
             const reply = await agent.Call(log)
-            if (reply) {
-                msg.reply(reply)
+            if (!reply) return
+            if (reply.text != "") {
+                msg.reply(reply.text)
             }
+            client.user?.setActivity({name: `Last Jev Score: ${reply.score}`})
         })
         return new Character(info, client, agent)
     }
