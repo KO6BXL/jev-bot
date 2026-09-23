@@ -36,7 +36,7 @@ export class Agent {
     }
 
     async Call(context: Message[]) {
-        const jev_context = context.slice(-16, -1) 
+        const jev_context = context.slice(-15) 
         console.log(`JEV START\n${jev_context.map(msg => `${msg.Author}:${msg.Content}\n`)}\nJEV END`)
         const name = this.info.Name
         const descrip = this.info.Description
